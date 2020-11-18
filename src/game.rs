@@ -1,4 +1,4 @@
-const BOARD_SIZE: usize = 3;
+pub const BOARD_SIZE: usize = 3;
 
 /// A value of a field on the board
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
@@ -8,6 +8,24 @@ pub enum Field {
     Blank,
 }
 
+impl Field {
+    pub fn flipped(self) -> Self {
+        match self {
+            Field::Cross => Field::Circle,
+            Field::Circle => Field::Cross,
+            Field::Blank => Field::Cross,
+        }
+    }
+
+    pub fn symbol(self) -> char {
+        match self {
+            Field::Cross => 'X',
+            Field::Circle => 'O',
+            Field::Blank => ' ',
+        }
+    }
+}
+
 impl Default for Field {
     fn default() -> Self {
         Field::Blank
@@ -15,7 +33,7 @@ impl Default for Field {
 }
 
 /// A tic tac toe board
-#[derive(Debug, Default)]
+#[derive(Debug, Clone, Default)]
 pub struct Board([[Field; BOARD_SIZE]; BOARD_SIZE]);
 
 impl Board {
@@ -46,6 +64,10 @@ impl Board {
     /// Gets the given column
     pub fn column(&self, col: usize) -> [Field; BOARD_SIZE] {
         [self.0[0][col], self.0[1][col], self.0[2][col]]
+    }
+
+    pub fn reset(&mut self) {
+        *self = Board::new();
     }
 
     /// Determines if the board has a winner
