@@ -24,6 +24,20 @@ impl Board {
         Self::default()
     }
 
+    pub fn get(&self, x: usize, y: usize) -> Field {
+        assert!(x < BOARD_SIZE);
+        assert!(y < BOARD_SIZE);
+
+        self.0[y][x]
+    }
+
+    pub fn set(&mut self, x: usize, y: usize, val: Field) {
+        assert!(x < BOARD_SIZE);
+        assert!(y < BOARD_SIZE);
+
+        self.0[y][x] = val;
+    }
+
     /// Gets the given row
     pub fn row(&self, row: usize) -> [Field; BOARD_SIZE] {
         self.0[row]
